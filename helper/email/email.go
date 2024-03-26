@@ -59,10 +59,10 @@ func (e *email) HTMLBody(role string, name string) (string, string, string) {
 	var header, htmlBody string
 
 	switch role {
-	case "SUPERADMIN":
+	case "admin":
 		header, htmlBody = e.htmlBodySuperadmin(name, code)
 		break
-	case "CUSTOMER":
+	case "customer":
 		header, htmlBody = e.htmlBodyCustomer(name, code)
 	}
 	return header, htmlBody, code

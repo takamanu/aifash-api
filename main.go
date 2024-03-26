@@ -45,9 +45,9 @@ func main() {
 
 	jwtInterface := helper.New(config.Secret, config.RefSecret)
 
-	userModel := dataUser.New(db)
+	userModel := dataUser.NewData(db)
 
-	userServices := serviceUser.New(userModel, jwtInterface, email, encrypt)
+	userServices := serviceUser.NewService(userModel, jwtInterface, email, encrypt)
 
 	userController := handlerUser.NewHandler(userServices, jwtInterface)
 

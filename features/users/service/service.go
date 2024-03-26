@@ -17,7 +17,7 @@ type UserService struct {
 	email email.EmailInterface
 }
 
-func New(data users.UserDataInterface, jwt helper.JWTInterface, email email.EmailInterface, encrypt encrypt.HashInterface) users.UserServiceInterface {
+func NewService(data users.UserDataInterface, jwt helper.JWTInterface, email email.EmailInterface, encrypt encrypt.HashInterface) users.UserServiceInterface {
 	return &UserService{
 		d:     data,
 		j:     jwt,
@@ -38,7 +38,7 @@ func (us *UserService) Register(newData users.User) (*users.User, error) {
 	}
 
 	newData.Password = hashPassword
-	newData.Status = "ACTIVE"
+	newData.Status = "active"
 
 	result, err := us.d.Register(newData)
 
@@ -60,8 +60,8 @@ func (us *UserService) RegisterCustomer(newData users.User) (*users.User, error)
 	}
 
 	newData.Password = hashPassword
-	newData.Role = "CUSTOMER"
-	newData.Status = "ACTIVE"
+	newData.Role = "customer"
+	newData.Status = "active"
 
 	result, err := us.d.Register(newData)
 

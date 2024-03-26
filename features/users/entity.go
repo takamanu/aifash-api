@@ -31,7 +31,7 @@ type Admin struct {
 
 type UserInfo struct {
 	Name   string         `json:"name"`
-	Email  string         `json:"email`
+	Email  string         `json:"email"`
 	Access map[string]any `json:"token"`
 }
 
@@ -73,7 +73,7 @@ type UserHandlerInterface interface {
 	ForgetPasswordVerify() echo.HandlerFunc
 	UpdateProfile() echo.HandlerFunc
 	RefreshToken() echo.HandlerFunc
-	// GetProfile() echo.HandlerFunc
+	GetProfile() echo.HandlerFunc
 }
 
 type UserServiceInterface interface {
@@ -86,6 +86,8 @@ type UserServiceInterface interface {
 	TokenResetVerify(code string) (*UserResetPass, error)
 	ResetPassword(code, email string, password string) error
 	UpdateProfile(id int, newData UpdateProfile) (bool, error)
+	AddPoints(id int, value int) (bool, error)
+	DeductPoints(id int, value int) (bool, error)
 	GetProfile(id int) (*User, error)
 }
 
@@ -100,4 +102,6 @@ type UserDataInterface interface {
 	GetByCode(code string) (*UserResetPass, error)
 	ResetPassword(code, email string, password string) error
 	UpdateProfile(id int, newData UpdateProfile) (bool, error)
+	AddPoints(id int, value int) (bool, error)
+	DeductPoints(id int, value int) (bool, error)
 }

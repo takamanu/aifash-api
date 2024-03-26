@@ -15,7 +15,7 @@ type UserData struct {
 	db *gorm.DB
 }
 
-func New(db *gorm.DB) users.UserDataInterface {
+func NewData(db *gorm.DB) users.UserDataInterface {
 	return &UserData{
 		db: db,
 	}
@@ -43,7 +43,7 @@ func (ud *UserData) Login(email, password string) (*users.User, error) {
 	var dbData = new(User)
 	dbData.Email = email
 
-	var qry = ud.db.Where("email = ? AND status = ?", dbData.Email, "ACTIVE").First(dbData)
+	var qry = ud.db.Where("email = ? AND status = ?", dbData.Email, "active").First(dbData)
 
 	var dataCount int64
 	qry.Count(&dataCount)
@@ -78,7 +78,7 @@ func (ud *UserData) LoginCustomer(email, password string) (*users.User, error) {
 	var dbData = new(User)
 	dbData.Email = email
 
-	var qry = ud.db.Where("email = ? AND status = ?", dbData.Email, "ACTIVE").First(dbData)
+	var qry = ud.db.Where("email = ? AND status = ?", dbData.Email, "active").First(dbData)
 
 	var dataCount int64
 	qry.Count(&dataCount)

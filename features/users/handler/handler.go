@@ -66,7 +66,7 @@ func (uh *UserHandler) Register() echo.HandlerFunc {
 		response.DateOfBirth = result.DateOfBirth
 		response.Name = result.Name
 		response.Role = result.Role
-		return c.JSON(http.StatusCreated, helper.FormatResponse(true, "Register admin success", response))
+		return c.JSON(http.StatusCreated, helper.FormatResponse(true, "register success", response))
 	}
 }
 
@@ -314,58 +314,27 @@ func (uh *UserHandler) ResetPassword() echo.HandlerFunc {
 	}
 }
 
-// func (uh *UserHandler) GetProfile() echo.HandlerFunc {
-// 	return func(c echo.Context) error {
-// 		getID, err := uh.jwt.GetID(c)
+func (uh *UserHandler) GetProfile() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		getID, err := uh.jwt.GetID(c)
 
-// 		if err != nil {
-// 			c.Logger().Error("Handler: Error getting profile by ID JWT: ", err.Error())
-// 			return c.JSON(http.StatusUnauthorized, helper.FormatResponse(false, "Data not found", nil))
-// 		}
+		if err != nil {
+			c.Logger().Error("Handler: Error getting profile by ID JWT: ", err.Error())
+			return c.JSON(http.StatusUnauthorized, helper.FormatResponse(false, "Data not found", nil))
+		}
 
-// 		result, err := uh.s.GetProfile(int(getID))
+		result, err := uh.s.GetProfile(int(getID))
 
-// 		if err != nil {
-// 			c.Logger().Error("Handler: Error getting profile by ID JWT: ", err.Error())
-// 			return c.JSON(http.StatusInternalServerError, helper.FormatResponse(false, err.Error(), nil))
-// 		}
+		if err != nil {
+			c.Logger().Error("Handler: Error getting profile by ID JWT: ", err.Error())
+			return c.JSON(http.StatusInternalServerError, helper.FormatResponse(false, err.Error(), nil))
+		}
 
-// 		if result.ID == 0 {
-// 			return c.JSON(http.StatusNotFound, helper.FormatResponse(false, "Data not found", nil))
+		if result.ID == 0 {
+			return c.JSON(http.StatusNotFound, helper.FormatResponse(false, "Data not found", nil))
 
-// 		}
+		}
 
-// 		var response interface{}
-
-// 		if result.Role == "CUSTOMER" {
-// 			customer, err := uh.sc.GetCustomerByID(result.ID)
-// 			if err != nil {
-// 				c.Logger().Error("Handler: Error getting customer profile ", err.Error())
-// 				return c.JSON(http.StatusInternalServerError, helper.FormatResponse(false, err.Error(), nil))
-// 			}
-// 			response = &ProfileResponse{
-// 				Name:           result.Name,
-// 				Email:          result.Email,
-// 				DateOfBirth:    result.DateOfBirth,
-// 				PhoneNumber:    result.PhoneNumber,
-// 				Status:         result.Status,
-// 				CustomerDetail: customer,
-// 			}
-// 		} else if result.Role == "SUPERADMIN" {
-// 			adminResponse, err := uh.s.GetProfile(int(result.ID))
-// 			if err != nil {
-// 				c.Logger().Error("Handler: Error getting admin profile ", err.Error())
-// 				return c.JSON(http.StatusInternalServerError, helper.FormatResponse(false, err.Error(), nil))
-// 			}
-// 			response = &AdminResponse{
-// 				Name:        adminResponse.Name,
-// 				Email:       adminResponse.Email,
-// 				PhoneNumber: adminResponse.PhoneNumber,
-// 				DateOfBirth: adminResponse.DateOfBirth,
-// 				Status:      adminResponse.Status,
-// 			}
-// 		}
-
-// 		return c.JSON(http.StatusOK, helper.FormatResponse(true, "Success fetch data", response))
-// 	}
-// }
+		return c.JSON(http.StatusOK, helper.FormatResponse(true, "Success fetch data", result))
+	}
+}
