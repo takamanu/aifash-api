@@ -15,6 +15,7 @@ type User struct {
 	DateOfBirth    time.Time `gorm:"column:date_of_birth"`
 	PhoneNumber    string    `gorm:"column:phone_number;type:varchar(255)"`
 	TokenResetPass string    `gorm:"column:token_reset_pass;type:varchar(255)"`
+	Points         uint      `gorm:"column:points"`
 	Status         string    `gorm:"column:status;type:status"`
 }
 
