@@ -212,3 +212,34 @@ func (ud *UserData) UpdateProfile(id int, newData users.UpdateProfile) (bool, er
 
 	return true, nil
 }
+
+func (ud *UserData) AddPoints(id int, value int) (bool, error) {
+	var user users.User
+
+	if err := ud.db.First(&user, id).Error; err != nil {
+		return false, err
+	}
+
+	user.Points += uint(value)
+
+	if err := ud.db.Save(&user).Error; err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+func (ud *UserData) DeductPoints(id int, value int) (bool, error) {
+	var user users.User
+
+	if err := ud.db.First(&user, id).Error; err != nil {
+		return false, err
+	}
+
+	user.Points -= uint(value)
+
+	if err := ud.db.Save(&user).Error; err != nil {
+		return false, err
+	}
+
+	return true, nil
+}

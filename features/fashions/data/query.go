@@ -2,6 +2,7 @@ package data
 
 import (
 	"aifash-api/features/fashions"
+	"errors"
 
 	"gorm.io/gorm"
 )
@@ -73,6 +74,16 @@ func (fd *FashionData) GetFashionByUserID(userID int) ([]fashions.Fashion, error
 	return fashions, nil
 }
 func (fd *FashionData) UpdateFashionByID(id int, newData fashions.Fashion) (bool, error) {
+	fashion, err := fd.GetFashionByID(id)
+
+	if err != nil {
+		return false, errors.New("fashion not found")
+	}
+
+	if fashion.Status == "accepted" {
+		return false, errors.New("you cannot update an accepted fashion")
+	}
+
 	dbData := &Fashion{
 		UserID:          newData.UserID,
 		FashionName:     newData.FashionName,

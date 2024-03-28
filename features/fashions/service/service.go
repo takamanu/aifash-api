@@ -1,14 +1,21 @@
 package service
 
-import "aifash-api/features/fashions"
+import (
+	"aifash-api/features/fashions"
+	"aifash-api/features/users"
+
+	"github.com/sirupsen/logrus"
+)
 
 type FashionService struct {
 	fd fashions.FashionDataInterface
+	ud users.UserDataInterface
 }
 
-func NewService(fd fashions.FashionDataInterface) fashions.FashionServiceInterface {
+func NewService(fd fashions.FashionDataInterface, ud users.UserDataInterface) fashions.FashionServiceInterface {
 	return &FashionService{
 		fd: fd,
+		ud: ud,
 	}
 }
 
@@ -54,6 +61,14 @@ func (fs *FashionService) UpdateFashionByID(id int, newData fashions.Fashion) (b
 
 	if err != nil {
 		return false, err
+	}
+
+	if newData.Status == "accepted" {
+		_, err := fs.ud.AddPoints(int(newData.UserID), newData.FashionPoints)
+		logrus.Info("[FASHION SERVICE] ", "Failed to add ", newData.FashionPoints, " points to UserID: ", newData.UserID)
+		if err != nil {
+			return false, err
+		}
 	}
 
 	return true, nil

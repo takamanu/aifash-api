@@ -15,6 +15,7 @@ type User struct {
 	DateOfBirth    time.Time `json:"date_of_birth"`
 	PhoneNumber    string    `json:"phone_number"`
 	TokenResetPass string    `json:"token_reset_pass"`
+	Points         uint      `json:"points" gorm:"column:points"`
 	Status         string    `json:"status"`
 }
 
