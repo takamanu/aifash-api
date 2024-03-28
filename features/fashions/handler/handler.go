@@ -11,10 +11,10 @@ import (
 
 type FashionHandler struct {
 	fs  fashions.FashionServiceInterface
-	jwt helper.JWT
+	jwt helper.JWTInterface
 }
 
-func NewHandler(fs fashions.FashionServiceInterface, jwt helper.JWT) fashions.FashionHandlerInterface {
+func NewHandler(fs fashions.FashionServiceInterface, jwt helper.JWTInterface) fashions.FashionHandlerInterface {
 	return &FashionHandler{
 		fs:  fs,
 		jwt: jwt,

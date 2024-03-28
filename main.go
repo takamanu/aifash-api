@@ -16,6 +16,14 @@ import (
 	dataUser "aifash-api/features/users/data"
 	handlerUser "aifash-api/features/users/handler"
 	serviceUser "aifash-api/features/users/service"
+
+	dataFashion "aifash-api/features/fashions/data"
+	handlerFashion "aifash-api/features/fashions/handler"
+	serviceFashion "aifash-api/features/fashions/service"
+
+	dataVoucher "aifash-api/features/vouchers/data"
+	handlerVoucher "aifash-api/features/vouchers/handler"
+	serviceVoucher "aifash-api/features/vouchers/service"
 )
 
 func main() {
@@ -46,10 +54,16 @@ func main() {
 	jwtInterface := helper.New(config.Secret, config.RefSecret)
 
 	userModel := dataUser.NewData(db)
+	fashionModel := dataFashion.NewData(db)
+	voucherModel := dataVoucher.NewData(db)
 
 	userServices := serviceUser.NewService(userModel, jwtInterface, email, encrypt)
+	fashionServices := serviceFashion.NewService(fashionModel, userModel)
+	voucherServices := serviceVoucher.NewService(voucherModel)
 
 	userController := handlerUser.NewHandler(userServices, jwtInterface)
+	fashionController := handlerFashion.NewHandler(fashionServices, jwtInterface)
+	voucherController := handlerVoucher.NewHandler(voucherServices, userServices, jwtInterface)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 
@@ -62,6 +76,8 @@ func main() {
 	group := e.Group("/api/v1")
 
 	routes.RouteUser(group, userController, *config)
+	routes.RouteFashion(group, fashionController, *config)
+	routes.RouteVoucher(group, voucherController, *config)
 
 	e.Logger.Debug(db)
 

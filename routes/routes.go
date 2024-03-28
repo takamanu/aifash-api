@@ -2,7 +2,9 @@ package routes
 
 import (
 	"aifash-api/configs"
+	"aifash-api/features/fashions"
 	"aifash-api/features/users"
+	"aifash-api/features/vouchers"
 
 	echojwt "github.com/labstack/echo-jwt"
 	"github.com/labstack/echo/v4"
@@ -21,22 +23,24 @@ func RouteUser(e *echo.Group, uh users.UserHandlerInterface, cfg configs.Program
 	// e.GET("/user/profile", uh.GetProfile(), echojwt.JWT([]byte(cfg.Secret)))
 }
 
-// // blogs routes
-// e.POST("/blogs", controllers.CreateBlogController)
-// e.GET("/blogs/:id", controllers.GetBlogController)
-// e.PUT("/blogs/:id", controllers.UpdateBlogController)
-// e.DELETE("/blogs/:id", controllers.DeleteBlogController)
+func RouteFashion(e *echo.Group, fh fashions.FashionHandlerInterface, cfg configs.ProgrammingConfig) {
+	e.POST("/fashion", fh.StoreFashion())
+	e.GET("/fashion", fh.GetAllFashion())
+	e.GET("/fashion/:id", fh.GetFashionByID())
+	e.GET("/fashion/user/:id", fh.GetFashionByUserID())
+	e.PUT("/fashion/:id", fh.UpdateFashionByID())
+	e.PUT("/fashion/:id", fh.DeleteFashionByID())
+}
 
-// e.POST("/fashion", CreateFashionItemHandler)
-// e.GET("/fashion", controllers.GetFashionItemsController)
-// e.GET("/fashion/:id", controllers.GetFashionItemByIDController)
-// e.PATCH("/fashion/:id", controllers.ChooseResponseFashion)
-// e.PUT("/fashion/:id", controllers.UpdateFashionItemController)
+func RouteVoucher(e *echo.Group, vh vouchers.VoucherHandlerInterface, cfg configs.ProgrammingConfig) {
+	e.POST("/voucher", vh.StoreVoucher())
+	e.GET("/voucher", vh.GetAllVoucher())
+	e.GET("/voucher/:id", vh.GetVoucherByID())
+	e.GET("/voucher/user/:id", vh.GetVoucherByUserID())
+	e.PUT("/voucher/:id", vh.UpdateVoucherByID())
+	e.DELETE("/voucher/:id", vh.DeleteVoucherByID())
 
-// e.POST("/voucher", CreateVoucherItemHandler)
-// e.GET("/voucher", controllers.GetVouchers)
-// e.GET("/voucher/:id", controllers.GetVoucherByID)
-// e.PATCH("/voucher/:id", controllers.UpdateVoucherController)
-
-// e.POST("/voucher/apply", controllers.CreateUserVoucher)
-// e.PATCH("/voucher/use/:id", controllers.MarkVoucherAsUsed)
+	e.POST("/user-voucher", vh.ClaimVoucher())
+	e.GET("/user-voucher/:id", vh.GetUserVoucherByID())
+	e.PUT("/user-voucher/:id", vh.UpdateClaimedVoucher())
+}

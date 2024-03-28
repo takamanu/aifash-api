@@ -25,8 +25,11 @@ type UserVoucher struct {
 
 type VoucherHandlerInterface interface {
 	StoreVoucher() echo.HandlerFunc
+	ClaimVoucher() echo.HandlerFunc
+	UpdateClaimedVoucher() echo.HandlerFunc
 	GetAllVoucher() echo.HandlerFunc
 	GetVoucherByID() echo.HandlerFunc
+	GetUserVoucherByID() echo.HandlerFunc
 	GetVoucherByUserID() echo.HandlerFunc
 	UpdateVoucherByID() echo.HandlerFunc
 	DeleteVoucherByID() echo.HandlerFunc
@@ -34,7 +37,10 @@ type VoucherHandlerInterface interface {
 
 type VoucherServiceInterface interface {
 	StoreVoucher(newData Voucher) (*Voucher, error)
+	ClaimVoucher(newData UserVoucher) (*UserVoucher, error)
+	UpdateClaimedVoucher(id int, newData UserVoucher) (bool, error)
 	GetAllVoucher() ([]Voucher, error)
+	GetUserVoucherByID(id int) (*UserVoucher, error)
 	GetVoucherByID(id int) (*Voucher, error)
 	GetVoucherByUserID(userID int) ([]UserVoucher, error)
 	UpdateVoucherByID(id int, newData Voucher) (bool, error)
@@ -43,8 +49,12 @@ type VoucherServiceInterface interface {
 
 type VoucherDataInterface interface {
 	StoreVoucher(newData Voucher) (*Voucher, error)
+	ClaimVoucher(newData UserVoucher) (*UserVoucher, error)
+	UpdateClaimedVoucher(id int, newData UserVoucher) (bool, error)
+
 	GetAllVoucher() ([]Voucher, error)
 	GetVoucherByID(id int) (*Voucher, error)
+	GetUserVoucherByID(id int) (*UserVoucher, error)
 	GetVoucherByUserID(userID int) ([]UserVoucher, error)
 	UpdateVoucherByID(id int, newData Voucher) (bool, error)
 	DeleteVoucherByID(id int) (bool, error)

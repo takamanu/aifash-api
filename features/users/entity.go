@@ -103,6 +103,6 @@ type UserDataInterface interface {
 	GetByCode(code string) (*UserResetPass, error)
 	ResetPassword(code, email string, password string) error
 	UpdateProfile(id int, newData UpdateProfile) (bool, error)
-	AddPoints(id int, value int) (bool, error)
-	DeductPoints(id int, value int) (bool, error)
+	AddPoints(userID int, value int) (bool, error)
+	DeductPoints(userID int, value int) (bool, error)
 }

@@ -24,6 +24,12 @@ type ProgrammingConfig struct {
 
 func InitConfig() *ProgrammingConfig {
 	var res = new(ProgrammingConfig)
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		return nil
+	}
+
 	res, errorRes := loadConfig()
 
 	logrus.Error(errorRes)
@@ -98,8 +104,9 @@ func loadConfig() (*ProgrammingConfig, error) {
 	if val, found := os.LookupEnv("DB_PASS"); found {
 		res.DBPass = val
 	} else {
-		permit = false
-		error = errors.New("DB Pass undefined")
+		// permit = false
+		// error = errors.New("DB Pass undefined")
+		res.DBPass = ""
 	}
 
 	if val, found := os.LookupEnv("DB_NAME"); found {
@@ -112,8 +119,9 @@ func loadConfig() (*ProgrammingConfig, error) {
 	if val, found := os.LookupEnv("BASE_URL"); found {
 		res.BaseURL = val
 	} else {
-		permit = false
-		error = errors.New("BASE_URL undefined")
+		res.BaseURL = ""
+		// permit = false
+		// error = errors.New("BASE_URL undefined")
 	}
 
 	if !permit {

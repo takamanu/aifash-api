@@ -21,6 +21,27 @@ func (vs *VoucherService) StoreVoucher(newData vouchers.Voucher) (*vouchers.Vouc
 
 	return res, nil
 }
+
+func (vs *VoucherService) ClaimVoucher(newData vouchers.UserVoucher) (*vouchers.UserVoucher, error) {
+	res, err := vs.vd.ClaimVoucher(newData)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (vs *VoucherService) UpdateClaimedVoucher(id int, newData vouchers.UserVoucher) (bool, error) {
+	_, err := vs.vd.UpdateClaimedVoucher(id, newData)
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+
+}
 func (vs *VoucherService) GetAllVoucher() ([]vouchers.Voucher, error) {
 	res, err := vs.vd.GetAllVoucher()
 
@@ -30,6 +51,7 @@ func (vs *VoucherService) GetAllVoucher() ([]vouchers.Voucher, error) {
 
 	return res, nil
 }
+
 func (vs *VoucherService) GetVoucherByID(id int) (*vouchers.Voucher, error) {
 	res, err := vs.vd.GetVoucherByID(id)
 
@@ -39,6 +61,17 @@ func (vs *VoucherService) GetVoucherByID(id int) (*vouchers.Voucher, error) {
 
 	return res, nil
 }
+
+func (vs *VoucherService) GetUserVoucherByID(id int) (*vouchers.UserVoucher, error) {
+	res, err := vs.vd.GetUserVoucherByID(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 func (vs *VoucherService) GetVoucherByUserID(userID int) ([]vouchers.UserVoucher, error) {
 	res, err := vs.vd.GetVoucherByUserID(userID)
 

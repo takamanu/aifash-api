@@ -271,8 +271,8 @@ func (us *UserService) GetProfile(id int) (*users.User, error) {
 	return &result, nil
 }
 
-func (us *UserService) AddPoints(id int, value int) (bool, error) {
-	_, err := us.d.AddPoints(id, value)
+func (us *UserService) AddPoints(userID int, value int) (bool, error) {
+	_, err := us.d.AddPoints(userID, value)
 
 	if err != nil {
 		return false, err
@@ -280,8 +280,8 @@ func (us *UserService) AddPoints(id int, value int) (bool, error) {
 
 	return true, nil
 }
-func (us *UserService) DeductPoints(id int, value int) (bool, error) {
-	_, err := us.d.DeductPoints(id, value)
+func (us *UserService) DeductPoints(userID int, value int) (bool, error) {
+	_, err := us.d.DeductPoints(userID, value)
 
 	if err != nil {
 		return false, err
