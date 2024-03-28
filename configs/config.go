@@ -25,7 +25,7 @@ type ProgrammingConfig struct {
 func InitConfig() *ProgrammingConfig {
 	var res = new(ProgrammingConfig)
 	// err := godotenv.Load(".env.staging")
-	err := godotenv.Load(".env")
+	err := godotenv.Load(".env.staging")
 
 	if err != nil {
 		return nil
