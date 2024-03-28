@@ -167,7 +167,7 @@ func (vh *VoucherHandler) GetVoucherByUserID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userID, _ := vh.jwt.GetID(c)
 
-		res, err := vh.vs.GetVoucherByID(int(userID))
+		res, err := vh.vs.GetVoucherByUserID(int(userID))
 
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, helper.FormatResponse(false, err.Error(), nil))

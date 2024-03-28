@@ -11,8 +11,8 @@ import (
 )
 
 func RouteUser(e *echo.Group, uh users.UserHandlerInterface, cfg configs.ProgrammingConfig) {
-	e.POST("/register", uh.RegisterCustomer())
-	e.POST("/admin/register", uh.Register())
+	e.POST("/register", uh.Register())
+	// e.POST("/admin/register", uh.Register())
 	// e.POST("/login", uh.LoginCustomer())
 	e.POST("/login", uh.Login())
 	e.POST("/forget-password", uh.ForgetPasswordWeb())
@@ -27,16 +27,16 @@ func RouteFashion(e *echo.Group, fh fashions.FashionHandlerInterface, cfg config
 	e.POST("/fashion", fh.StoreFashion())
 	e.GET("/fashion", fh.GetAllFashion())
 	e.GET("/fashion/:id", fh.GetFashionByID())
-	e.GET("/fashion/user/:id", fh.GetFashionByUserID())
+	e.GET("/fashion/user", fh.GetFashionByUserID())
 	e.PUT("/fashion/:id", fh.UpdateFashionByID())
-	e.PUT("/fashion/:id", fh.DeleteFashionByID())
+	e.DELETE("/fashion/:id", fh.DeleteFashionByID())
 }
 
 func RouteVoucher(e *echo.Group, vh vouchers.VoucherHandlerInterface, cfg configs.ProgrammingConfig) {
 	e.POST("/voucher", vh.StoreVoucher())
 	e.GET("/voucher", vh.GetAllVoucher())
 	e.GET("/voucher/:id", vh.GetVoucherByID())
-	e.GET("/voucher/user/:id", vh.GetVoucherByUserID())
+	e.GET("/voucher/user", vh.GetVoucherByUserID())
 	e.PUT("/voucher/:id", vh.UpdateVoucherByID())
 	e.DELETE("/voucher/:id", vh.DeleteVoucherByID())
 

@@ -3,7 +3,9 @@ package database
 import (
 	"fmt"
 
+	DataFashion "aifash-api/features/fashions/data"
 	DataUser "aifash-api/features/users/data"
+	DataVoucher "aifash-api/features/vouchers/data"
 
 	"gorm.io/gorm"
 )
@@ -13,14 +15,16 @@ func MigrateWithDrop(db *gorm.DB) {
 	// USER DATA MANAGEMENT \\
 	db.AutoMigrate(DataUser.User{})
 	db.AutoMigrate(DataUser.UserResetPass{})
-	fmt.Println("[MIGRATION] Success creating user and regions")
+	fmt.Println("[MIGRATION] Success creating user")
 
 	// Fashion DATA MANAGEMENT \\
-	// 	DB.AutoMigrate(&models.Fashion{})
+	db.AutoMigrate(&DataFashion.Fashion{})
+	fmt.Println("[MIGRATION] Success creating fashion")
 
 	// Voucher DATA MANAGEMENT \\
 	// 	DB.AutoMigrate(&models.Point{})
-	// 	DB.AutoMigrate(&models.Voucher{})
-	// 	DB.AutoMigrate(&models.UserVoucher{})
+	db.AutoMigrate(&DataVoucher.Voucher{})
+	db.AutoMigrate(&DataVoucher.UserVoucher{})
+	fmt.Println("[MIGRATION] Success creating vouchers")
 
 }

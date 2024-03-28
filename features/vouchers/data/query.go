@@ -109,8 +109,12 @@ func (vd *VoucherData) GetAllVoucher() ([]vouchers.Voucher, error) {
 func (vd *VoucherData) GetVoucherByID(id int) (*vouchers.Voucher, error) {
 	var vouchers vouchers.Voucher
 
-	if err := vd.db.Model(&Voucher{}).Where("id = ?", id).Where("deleted_at IS NULL").First(&vouchers).Error; err != nil {
+	if err := vd.db.Model(&Voucher{}).Preload("UserVoucher").Where("id = ?", id).Where("deleted_at IS NULL").Find(&vouchers).Error; err != nil {
 		return nil, err
+	}
+
+	if vouchers.ID == 0 {
+		return nil, errors.New("voucher not found")
 	}
 
 	return &vouchers, nil
@@ -159,6 +163,12 @@ func (vd *VoucherData) UpdateVoucherByID(id int, newData vouchers.Voucher) (bool
 	return true, nil
 }
 func (vd *VoucherData) DeleteVoucherByID(id int) (bool, error) {
+	_, err := vd.GetVoucherByID(id)
+
+	if err != nil {
+		return false, errors.New("voucher not found")
+	}
+
 	if err := vd.db.Delete(&Voucher{}, "id = ?", id).Error; err != nil {
 		return false, err
 	}

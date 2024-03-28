@@ -59,6 +59,10 @@ func (fd *FashionData) GetFashionByID(id int) (*fashions.Fashion, error) {
 		return nil, err
 	}
 
+	if fashions.ID == 0 {
+		return nil, errors.New("fashion not found")
+	}
+
 	return &fashions, nil
 }
 func (fd *FashionData) GetFashionByUserID(userID int) ([]fashions.Fashion, error) {
@@ -99,6 +103,12 @@ func (fd *FashionData) UpdateFashionByID(id int, newData fashions.Fashion) (bool
 	return true, nil
 }
 func (fd *FashionData) DeleteFashionByID(id int) (bool, error) {
+	_, err := fd.GetFashionByID(id)
+
+	if err != nil {
+		return false, errors.New("fashion not found")
+	}
+
 	if err := fd.db.Delete(&Fashion{}, "id = ?", id).Error; err != nil {
 		return false, err
 	}

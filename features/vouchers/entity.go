@@ -7,16 +7,18 @@ import (
 )
 
 type Voucher struct {
+	ID              uint          `json:"id,omitempty"`
 	VoucherName     string        `gorm:"column:voucher_name" json:"voucher_name"`
 	VoucherImageURL string        `gorm:"column:voucher_url_image" json:"voucher_url_image"`
 	VoucherCode     string        `gorm:"column:voucher_code" json:"voucher_code"`
 	VoucherPrice    uint          `gorm:"column:voucher_price" json:"voucher_price"`
 	Stock           uint          `gorm:"column:stock" json:"stock"`
 	ExpiredIn       uint          `gorm:"column:expired_in" json:"expired_in"`
-	UserVoucher     []UserVoucher `gorm:"foreignKey:VoucherID" json:"user_voucher"`
+	UserVoucher     []UserVoucher `gorm:"foreignKey:VoucherID" json:"user_voucher,omitempty"`
 }
 
 type UserVoucher struct {
+	ID             uint       `json:"id,omitempty"`
 	UserID         uint       `gorm:"column:user_id" json:"user_id"`
 	VoucherID      uint       `gorm:"column:voucher_id" json:"voucher_id"`
 	Status         string     `gorm:"column:voucher_status" json:"voucher_status"`

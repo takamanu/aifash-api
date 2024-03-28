@@ -63,9 +63,16 @@ func (fs *FashionService) UpdateFashionByID(id int, newData fashions.Fashion) (b
 		return false, err
 	}
 
+	fashion, err := fs.fd.GetFashionByID(id)
+
+	if err != nil {
+		return false, err
+	}
+
 	if newData.Status == "accepted" {
-		_, err := fs.ud.AddPoints(int(newData.UserID), newData.FashionPoints)
-		logrus.Info("[FASHION SERVICE] ", "Failed to add ", newData.FashionPoints, " points to UserID: ", newData.UserID)
+		_, err := fs.ud.AddPoints(int(fashion.UserID), fashion.FashionPoints)
+
+		logrus.Info("[FASHION SERVICE] ", "Failed to add ", fashion.FashionPoints, " points to UserID: ", fashion.UserID)
 		if err != nil {
 			return false, err
 		}

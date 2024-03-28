@@ -3,6 +3,7 @@ package fashions
 import "github.com/labstack/echo/v4"
 
 type Fashion struct {
+	ID              uint   `json:"id,omitempty"`
 	UserID          uint   `gorm:"column:user_id" json:"user_id"`
 	FashionName     string `gorm:"column:fashion_name" json:"fashion_name"`
 	FashionPoints   int    `gorm:"column:fashion_points" json:"fashion_points"`

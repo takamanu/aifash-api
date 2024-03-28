@@ -37,7 +37,6 @@ func (fh *FashionHandler) StoreFashion() echo.HandlerFunc {
 				UserID:          userID,
 				FashionName:     input.FashionName,
 				FashionPoints:   input.FashionPoints,
-				Status:          input.Status,
 				FashionURLImage: input.FashionURLImage,
 			})
 
