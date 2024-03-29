@@ -11,24 +11,29 @@ import (
 )
 
 type ProgrammingConfig struct {
-	ServerPort int
-	DBPort     uint16
-	DBHost     string
-	DBUser     string
-	DBPass     string
-	DBName     string
-	Secret     string
-	RefSecret  string
-	BaseURL    string
+	ServerPort  int
+	Environment string
+	DBPort      uint16
+	DBHost      string
+	DBUser      string
+	DBPass      string
+	DBName      string
+	Secret      string
+	RefSecret   string
+	BaseURL     string
 }
 
 func InitConfig() *ProgrammingConfig {
 	var res = new(ProgrammingConfig)
-	// err := godotenv.Load(".env.staging")
-	err := godotenv.Load(".env.staging")
+	err := godotenv.Load(".env")
 
 	if err != nil {
-		return nil
+		err := godotenv.Load(".env.staging")
+
+		if err != nil {
+			return nil
+		}
+
 	}
 
 	res, errorRes := loadConfig()

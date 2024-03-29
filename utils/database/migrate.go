@@ -11,6 +11,12 @@ import (
 )
 
 func MigrateWithDrop(db *gorm.DB) {
+	// Drop entire schema
+	db.Exec("DROP DATABASE IF EXISTS defaultdb")
+	db.Exec("CREATE DATABASE defaultdb")
+
+	db.Exec("USE defaultdb")
+	fmt.Println("[MIGRATION] Success dropping aifash database and creating a new one")
 
 	// USER DATA MANAGEMENT \\
 	db.AutoMigrate(DataUser.User{})
