@@ -32,12 +32,24 @@ func (fh *FashionHandler) StoreFashion() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, helper.FormatResponse(false, "Bind input Error", nil))
 		}
 
+		file, err := c.FormFile("attachment")
+
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, helper.FormatResponse(false, "please upload a fashion photo", nil))
+		}
+
+		url, err := fh.fs.UploadFile(*file)
+
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, helper.FormatResponse(false, err.Error(), nil))
+		}
+
 		res, err := fh.fs.StoreFashion(
 			fashions.Fashion{
 				UserID:          userID,
 				FashionName:     input.FashionName,
 				FashionPoints:   input.FashionPoints,
-				FashionURLImage: input.FashionURLImage,
+				FashionURLImage: *url,
 			})
 
 		if err != nil {
@@ -103,10 +115,10 @@ func (fh *FashionHandler) UpdateFashionByID() echo.HandlerFunc {
 
 		_, err := fh.fs.UpdateFashionByID(id,
 			fashions.Fashion{
-				FashionName:     input.FashionName,
-				FashionPoints:   input.FashionPoints,
-				Status:          input.Status,
-				FashionURLImage: input.FashionURLImage,
+				FashionName:   input.FashionName,
+				FashionPoints: input.FashionPoints,
+				Status:        input.Status,
+				// FashionURLImage: input.FashionURLImage,
 			})
 
 		if err != nil {
@@ -127,5 +139,35 @@ func (fh *FashionHandler) DeleteFashionByID() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusOK, helper.FormatResponse(true, "success delete data", nil))
+	}
+}
+
+func (fh *FashionHandler) UploadFile() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		// var input = new(UploadRequest)
+
+		// if err := c.Bind(input); err != nil {
+		// 	c.Logger().Error("Handler : Bind Input Error : ", err.Error())
+		// 	return c.JSON(http.StatusBadRequest, helper.FormatResponse(false, "Bind input Error", nil))
+		// }
+
+		file, err := c.FormFile("attachment")
+
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, helper.FormatResponse(false, "please upload file", nil))
+		}
+
+		url, err := fh.fs.UploadFile(*file)
+
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, helper.FormatResponse(false, err.Error(), nil))
+		}
+
+		res := map[string]interface{}{
+			"url": url,
+		}
+
+		return c.JSON(http.StatusOK, helper.FormatResponse(true, "success upload file", res))
 	}
 }

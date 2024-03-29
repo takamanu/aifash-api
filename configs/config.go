@@ -11,16 +11,21 @@ import (
 )
 
 type ProgrammingConfig struct {
-	ServerPort  int
-	Environment string
-	DBPort      uint16
-	DBHost      string
-	DBUser      string
-	DBPass      string
-	DBName      string
-	Secret      string
-	RefSecret   string
-	BaseURL     string
+	ServerPort            int
+	Environment           string
+	DBPort                uint16
+	DBHost                string
+	DBUser                string
+	DBPass                string
+	DBName                string
+	Secret                string
+	RefSecret             string
+	BaseURL               string
+	BucketAccessKeyID     string
+	BucketSecretAccessKey string
+	BucketRegion          string
+	BucketEndpoint        string
+	BucketName            string
 }
 
 func InitConfig() *ProgrammingConfig {
@@ -128,6 +133,40 @@ func loadConfig() (*ProgrammingConfig, error) {
 		res.BaseURL = ""
 		// permit = false
 		// error = errors.New("BASE_URL undefined")
+	}
+	if val, found := os.LookupEnv("BUCKET_ACCESS_KEY_ID"); found {
+		res.BucketAccessKeyID = val
+	} else {
+		permit = false
+		error = errors.New("Config : Invalid BUCKET ACCESS KEY ID undefined")
+	}
+
+	if val, found := os.LookupEnv("BUCKET_SECRET_ACCESS_KEY"); found {
+		res.BucketSecretAccessKey = val
+	} else {
+		permit = false
+		error = errors.New("Config : Invalid BUCKET SECRET ACCESS KEY undefined")
+	}
+
+	if val, found := os.LookupEnv("BUCKET_REGION"); found {
+		res.BucketRegion = val
+	} else {
+		permit = false
+		error = errors.New("Config : Invalid BUCKET REGION undefined")
+	}
+
+	if val, found := os.LookupEnv("BUCKET_ENDPOINT"); found {
+		res.BucketEndpoint = val
+	} else {
+		permit = false
+		error = errors.New("Config : Invalid BUCKET ENDPOINT undefined")
+	}
+
+	if val, found := os.LookupEnv("BUCKET_NAME"); found {
+		res.BucketName = val
+	} else {
+		permit = false
+		error = errors.New("Config : Invalid BUCKET NAME undefined")
 	}
 
 	if !permit {

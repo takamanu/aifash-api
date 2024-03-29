@@ -3,20 +3,34 @@ package service
 import (
 	"aifash-api/features/fashions"
 	"aifash-api/features/users"
+	"aifash-api/utils/bucket"
+	"mime/multipart"
 
 	"github.com/sirupsen/logrus"
 )
 
 type FashionService struct {
-	fd fashions.FashionDataInterface
-	ud users.UserDataInterface
+	fd  fashions.FashionDataInterface
+	ud  users.UserDataInterface
+	bct bucket.BucketInterface
 }
 
-func NewService(fd fashions.FashionDataInterface, ud users.UserDataInterface) fashions.FashionServiceInterface {
+func NewService(fd fashions.FashionDataInterface, ud users.UserDataInterface, bct bucket.BucketInterface) fashions.FashionServiceInterface {
 	return &FashionService{
-		fd: fd,
-		ud: ud,
+		fd:  fd,
+		ud:  ud,
+		bct: bct,
 	}
+}
+
+func (fs *FashionService) UploadFile(file multipart.FileHeader) (*string, error) {
+	res, err := fs.bct.UploadImageHelper(file)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (fs *FashionService) StoreFashion(newData fashions.Fashion) (*fashions.Fashion, error) {

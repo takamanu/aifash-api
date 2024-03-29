@@ -1,6 +1,10 @@
 package fashions
 
-import "github.com/labstack/echo/v4"
+import (
+	"mime/multipart"
+
+	"github.com/labstack/echo/v4"
+)
 
 type Fashion struct {
 	ID              uint   `json:"id,omitempty"`
@@ -21,6 +25,7 @@ type FashionDetailed struct {
 }
 
 type FashionHandlerInterface interface {
+	UploadFile() echo.HandlerFunc
 	StoreFashion() echo.HandlerFunc
 	GetAllFashion() echo.HandlerFunc
 	GetFashionByID() echo.HandlerFunc
@@ -30,6 +35,7 @@ type FashionHandlerInterface interface {
 }
 
 type FashionServiceInterface interface {
+	UploadFile(file multipart.FileHeader) (*string, error)
 	StoreFashion(newData Fashion) (*Fashion, error)
 	GetAllFashion() ([]Fashion, error)
 	GetFashionByID(id int) (*Fashion, error)

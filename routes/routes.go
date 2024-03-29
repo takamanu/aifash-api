@@ -25,6 +25,7 @@ func RouteUser(e *echo.Group, uh users.UserHandlerInterface, cfg configs.Program
 
 func RouteFashion(e *echo.Group, fh fashions.FashionHandlerInterface, cfg configs.ProgrammingConfig) {
 	e.POST("/fashion", fh.StoreFashion())
+	e.POST("/upload", fh.UploadFile())
 	e.GET("/fashion", fh.GetAllFashion())
 	e.GET("/fashion/:id", fh.GetFashionByID())
 	e.GET("/fashion/user", fh.GetFashionByUserID())

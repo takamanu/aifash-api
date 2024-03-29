@@ -6,6 +6,7 @@ import (
 	email "aifash-api/helper/email"
 	encrypt "aifash-api/helper/encrypt"
 	"aifash-api/routes"
+	"aifash-api/utils/bucket"
 	"aifash-api/utils/database"
 	"fmt"
 	"net/http"
@@ -50,6 +51,7 @@ func main() {
 
 	var encrypt = encrypt.New()
 	var email = email.New(*config)
+	var bucket = bucket.InitBucket(*config)
 
 	jwtInterface := helper.New(config.Secret, config.RefSecret)
 
@@ -58,7 +60,7 @@ func main() {
 	voucherModel := dataVoucher.NewData(db)
 
 	userServices := serviceUser.NewService(userModel, jwtInterface, email, encrypt)
-	fashionServices := serviceFashion.NewService(fashionModel, userModel)
+	fashionServices := serviceFashion.NewService(fashionModel, userModel, bucket)
 	voucherServices := serviceVoucher.NewService(voucherModel)
 
 	userController := handlerUser.NewHandler(userServices, jwtInterface)
