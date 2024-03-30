@@ -20,7 +20,7 @@ func RouteUser(e *echo.Group, uh users.UserHandlerInterface, cfg configs.Program
 	e.POST("/reset-password", uh.ResetPassword())
 	// e.POST("/refresh-token", uh.RefreshToken(), echojwt.JWT([]byte(cfg.Secret)))
 	e.PUT("/admin/update", uh.UpdateProfile(), echojwt.JWT([]byte(cfg.Secret)))
-	// e.GET("/user/profile", uh.GetProfile(), echojwt.JWT([]byte(cfg.Secret)))
+	e.GET("/user/profile", uh.GetProfile(), echojwt.JWT([]byte(cfg.Secret)))
 }
 
 func RouteFashion(e *echo.Group, fh fashions.FashionHandlerInterface, cfg configs.ProgrammingConfig) {
